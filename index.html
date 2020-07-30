@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rainbow Colors</title>
+    <style>
+      #colorsFrame {
+        height: 100vh;
+        width: 100%;
+        font-size: 50px;
+        color: white;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="colorsFrame"></div>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player" style="display: none"></div>
+
+    <script>
+      var colors = document.getElementById('colorsFrame');
+      const colorList = ['blue', 'green', 'red', 'black', 'purple'];
+      var index = 0;
+      var startVid = false;
+      const randomInt = setInterval(changeColors, 1000);
+
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '720px',
+          width: '100%',
+          videoId: 'iLBBRuVDOo4',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange,
+            'onPause': playVid
+          }
+        });
+      }
+
+      var playing = false;
+
+      function changeColors() {
+        if (index >= 4) {
+          player.playVideo();
+          playing = true;
+          clearInterval(randomInt);
+          document.getElementById('player').style.display = 'block';
+        }
+        colors.innerHTML = 'This is so ' + colorList[index];
+        colors.style.backgroundColor = colorList[index];
+        index += 1;
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        if (playing) {
+          event.target.playVideo();
+        }
+      }
+
+      function playVid(event) {
+          event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      function onPlayerStateChange(event) {
+          if(event.data != 1) {
+            event.target.playVideo();
+          }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+     setTimeout(spawnWindow, 1000);
+
+     function spawnWindow() {
+       //var rickRollWin = window.open("", "MsgWindow", "width=1080,height=720");
+     }
+    </script>
+  </body>
+</html>
