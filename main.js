@@ -43,7 +43,7 @@ function onYouTubeIframeAPIReady() {
 var playing = false;
 
 function changeColors() {
-  if (index >= 4) {
+  if (index >= 8) {
     player.playVideo();
     playing = true;
     clearInterval(randomInt);
@@ -52,6 +52,12 @@ function changeColors() {
   }
   colors.innerHTML = 'This is so ' + colorList[index];
   colors.style.backgroundColor = colorList[index];
+  index += 1;
+}
+
+function changeColors2() {
+  colors.innerHTML = 'This is so ' + colorList[index % 5];
+  colors.style.backgroundColor = colorList[index % 5];
   index += 1;
 }
 
@@ -76,6 +82,9 @@ function onPlayerStateChange(event) {
   }
 }
 
+index = 0;
+var colorChange2 = setInterval(changeColors2, 1000); // Continues changing color after video has started playing
+
 setInterval(unMuteIfMuted, 1); // Checks to see if player is muted
 
 function unMuteIfMuted() {
@@ -84,15 +93,3 @@ function unMuteIfMuted() {
   }
   player.setVolume(100);
 }
-
-/*
-function stopVideo() {
-  player.stopVideo();
-}
-
-setTimeout(spawnWindow, 1000);
-
-function spawnWindow() {
-  //var rickRollWin = window.open("", "MsgWindow", "width=1080,height=720");
-}
-*/
