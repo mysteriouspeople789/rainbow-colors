@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Rainbow Colors</title>
+    <link rel="icon" type="image/gif" href="rainbowcolorpic.ico" sizes="16x16">
     <style>
       #colorsFrame {
         height: 100vh;
@@ -10,19 +11,35 @@
         color: white;
         text-align: center;
       }
+      body {
+        margin: 0;
+      }
     </style>
   </head>
-  <body>
+  <body onclick="spam()">
     <div id="colorsFrame"></div>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <div id="player" style="display: none"></div>
 
     <script>
+      function spam() {
+        const elem = document.getElementById('player');
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+          elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+          elem.msRequestFullscreen();
+        }
+      }
+
       var colors = document.getElementById('colorsFrame');
       const colorList = ['blue', 'green', 'red', 'black', 'purple'];
       var index = 0;
-      var startVid = false;
-      const randomInt = setInterval(changeColors, 1000);
+      //var startVid = false;
+      var randomInt = setInterval(changeColors, 1000);
 
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
@@ -55,6 +72,7 @@
           playing = true;
           clearInterval(randomInt);
           document.getElementById('player').style.display = 'block';
+          document.getElementById('colorsFrame').innerHTML = 'Hi';
         }
         colors.innerHTML = 'This is so ' + colorList[index];
         colors.style.backgroundColor = colorList[index];
@@ -69,17 +87,29 @@
       }
 
       function playVid(event) {
-          event.target.playVideo();
+        event.target.playVideo();
       }
 
       // 5. The API calls this function when the player's state changes.
       //    The function indicates that when playing a video (state=1),
       //    the player should play for six seconds and then stop.
+
       function onPlayerStateChange(event) {
-          if(event.data != 1) {
-            event.target.playVideo();
-          }
+        if(event.data != 1) {
+          event.target.playVideo();
+        }
       }
+
+      setInterval(unMuteIfMuted, 1); // Checks to see if player is muted
+
+      function unMuteIfMuted() {
+        if(player.isMuted()) {
+          player.unMute();
+        }
+        player.setVolume(100);
+      }
+
+/*
       function stopVideo() {
         player.stopVideo();
       }
@@ -88,6 +118,7 @@
      function spawnWindow() {
        //var rickRollWin = window.open("", "MsgWindow", "width=1080,height=720");
      }
+*/
     </script>
   </body>
 </html>
