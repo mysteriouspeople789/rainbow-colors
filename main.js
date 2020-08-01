@@ -43,19 +43,13 @@ function onYouTubeIframeAPIReady() {
 var playing = false;
 
 function changeColors() {
-  if (index >= 8) {
+  if (index >= 4) {
     player.playVideo();
     playing = true;
-    clearInterval(randomInt);
+    //clearInterval(randomInt);
     document.getElementById('player').style.display = 'block';
     document.getElementById('colorsFrame').innerHTML = 'Hi';
   }
-  colors.innerHTML = 'This is so ' + colorList[index];
-  colors.style.backgroundColor = colorList[index];
-  index += 1;
-}
-
-function changeColors2() {
   colors.innerHTML = 'This is so ' + colorList[index % 5];
   colors.style.backgroundColor = colorList[index % 5];
   index += 1;
@@ -81,9 +75,6 @@ function onPlayerStateChange(event) {
     event.target.playVideo();
   }
 }
-
-index = 0;
-var colorChange2 = setInterval(changeColors2, 1000); // Continues changing color after video has started playing
 
 setInterval(unMuteIfMuted, 1); // Checks to see if player is muted
 
